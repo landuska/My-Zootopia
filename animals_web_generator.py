@@ -3,27 +3,51 @@ import json
 
 def load_data(file_path):
     """ Loads a JSON file """
+
     with open(file_path, "r") as handle:
         return json.load(handle)
 
 
-def print_animal_info(animals: list):
-    for animal in animals:
-        name = animal.get("name", "")
-        location = ", ".join(animal.get("locations", []))
+def load_html(file_path):
+    """ Loads a HTML file """
 
+    with open(file_path, "r") as file:
+        return file.read()
+
+
+def save_html(file_path, content):
+    """ Saves a HTML file """
+
+    with open(file_path, "w") as file:
+        file.write(content)
+
+
+def animal_info(animals: list):
+    """ Get info about animals """
+    output = ''
+    for animal in animals:
+        location = ", ".join(animal.get("locations", []))
+        name = animal.get("name")
         characteristics = animal.get("characteristics", {})
         diet = characteristics.get("diet", "")
         animal_type = characteristics.get("group", "")
 
-        print(f"Name: {name}")
-        print(f"Diet: {diet}")
-        print(f"Location: {location}")
-
+        output += f"Name: {name}\n"
+        output += f"Diet: {diet}\n"
+        output += f"Location: {location}\n"
         if animal_type:
-            print(f"Type: {animal_type}")
-        print()
+            output += f"Diet: {animal_type}\n"
+
+    return output
 
 
-animals_data = load_data('animals_data.json')
-print_animal_info(animals_data)
+def main():
+    animals_data = load_data('animals_data.json')
+    animals_info = animal_info(animals_data)
+    html_page = load_html("animals_template.html")
+    html_with_animals = html_page.replace("__REPLACE_ANIMALS_INFO__", animals_info)
+    save_html("animals.html", html_with_animals)
+
+
+if __name__ == "__main__":
+    main()
