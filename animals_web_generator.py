@@ -32,11 +32,13 @@ def animal_info(animals: list):
         diet = characteristics.get("diet", "")
         animal_type = characteristics.get("group", "")
 
-        output += f"Name: {name}\n"
-        output += f"Diet: {diet}\n"
-        output += f"Location: {location}\n"
+        output += '<li class="cards__item">'
+        output += f"Name: {name}<br/>\n"
+        output += f"Diet: {diet}<br/>\n"
+        output += f"Location: {location}<br/>\n"
         if animal_type:
-            output += f"Diet: {animal_type}\n"
+            output += f"Diet: {animal_type}<br/>\n"
+        output += '</li>'
 
     return output
 
