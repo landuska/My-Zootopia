@@ -1,4 +1,5 @@
 import json
+import re
 
 
 def load_data(file_path):
@@ -27,18 +28,18 @@ def animal_info(animals: list):
     output = ''
     for animal in animals:
         location = ", ".join(animal.get("locations", []))
-        name = animal.get("name")
+        name = re.sub(r'[^a-zA-Z0-9 ]', '', animal.get("name", "").strip())
         characteristics = animal.get("characteristics", {})
-        diet = characteristics.get("diet", "")
-        animal_type = characteristics.get("group", "")
+        diet = characteristics.get("diet", "").strip()
+        animal_type = characteristics.get("group", "").strip()
 
         output += '<li class="cards__item">'
-        output += f"Name: {name}<br/>\n"
-        output += f"Diet: {diet}<br/>\n"
-        output += f"Location: {location}<br/>\n"
+        output += f'<div class="card__title">{name}</div><p class="card__text">\n'
+        output += f"<strong>Diet: </strong>{diet}<br/>\n"
+        output += f"<strong>Location: </strong>{location}<br/>\n"
         if animal_type:
-            output += f"Diet: {animal_type}<br/>\n"
-        output += '</li>'
+            output += f"<strong>Diet: </strong>{animal_type}<br/>\n"
+        output += '</p>\n</li>'
 
     return output
 
