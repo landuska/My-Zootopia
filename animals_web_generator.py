@@ -23,15 +23,20 @@ def save_html(file_path, content):
         file.write(content)
 
 
-def serialize_animal(location, name, diet, animal_type=""):
+def serialize_animal(all_animal_info):
     """ Serialize an animal """
-    
+
     output_string = ''
+    location, name, diet, temperament, color, lifespan, animal_type = all_animal_info
 
     output_string += '<li class="cards__item">'
     output_string += f'<div class="card__title">{name}</div><p class="card__text">\n'
     output_string += f"<strong>Diet: </strong>{diet}<br/>\n"
     output_string += f"<strong>Location: </strong>{location}<br/>\n"
+    output_string += f"<strong>Temperament: </strong>{temperament}<br/>\n"
+    output_string += f"<strong>Color: </strong>{color}<br/>\n"
+    output_string += f"<strong>Lifespan: </strong>{lifespan}<br/>\n"
+
     if animal_type:
         output_string += f"<strong>Diet: </strong>{animal_type}<br/>\n"
     output_string += '</p>\n</li>'
@@ -48,8 +53,14 @@ def animal_info(animals: list):
         name = re.sub(r'[^a-zA-Z0-9 ]', '', animal.get("name", "").strip())
         characteristics = animal.get("characteristics", {})
         diet = characteristics.get("diet", "").strip()
+        temperament = characteristics.get("temperament", "").strip()
+        color = characteristics.get("color", "").stirp()
+        lifespan = characteristics.get("lifespan", "").strip().replace("â€“", " - ")
+
         animal_type = characteristics.get("group", "").strip()
-        output += serialize_animal(location, name, diet, animal_type)
+
+        all_animal_info = location, name, diet, temperament, color, lifespan, animal_type
+        output += serialize_animal(all_animal_info)
 
     return output
 
